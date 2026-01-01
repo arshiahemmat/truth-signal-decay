@@ -1,7 +1,11 @@
 # Hallucination as Signal Decay
 **When Models Know but Don’t Say: Detecting Truth-Signal Decay and Fixing It with Conditional Decoding**
 
-This repository contains the code for the paper "Hallucination as Signal Decay". We investigate why LLMs fail to generate facts they "know" (Pairwise Accuracy > 90%), identifying a "Top-k Decoding Gap" where the correct entity is present in the logits but loses to generic tokens. We propose a lightweight **Top-k Monitor** and **Logit Mixing** intervention to recover these errors.
+We examine why LLMs fail to generate facts they "know" (Pairwise Accuracy > 90%), identifying a "Top-k Decoding Gap" where the correct entity is present in the logits but loses to generic tokens. We propose a lightweight **Top-k Monitor** and **Logit Mixing** intervention to recover these errors.
+
+![Gap Analysis](assets/composite_gap.png)
+
+> **See [ANALYSIS.md](ANALYSIS.md) for a deep-dive visual report of the findings.**
 
 ## 📂 Repository Structure
 
