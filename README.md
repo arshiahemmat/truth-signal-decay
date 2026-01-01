@@ -7,6 +7,12 @@ We examine why LLMs fail to generate facts they "know" (Pairwise Accuracy > 90%)
 
 > **See [ANALYSIS.md](ANALYSIS.md) for a deep-dive visual report of the findings.**
 
+## 💻 Interactive Demo
+
+You can easily use this link to run the code interactively without installing anything:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/arshiahemmat/truth-signal-decay/blob/main/Hallucination_Analysis.ipynb)
+
 ## 📂 Repository Structure
 
 The codebase is organized into five main modules under `src/`:
