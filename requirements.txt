@@ -1,0 +1,14 @@
+transformer_lens
+torch
+accelerate
+bitsandbytes
+pandas
+numpy
+tqdm
+matplotlib
+seaborn
+scikit-learn
+datasets
+einops
+ipykernel
+jupyter

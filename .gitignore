@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# Project Artifacts (User requested code only)
+results/
+plots/
+*.csv
+*.pkl
+*.npy
+*.json
+*.png
+*.jpg
+*.jpeg
+
+# System
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
