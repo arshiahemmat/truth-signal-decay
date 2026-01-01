@@ -15,25 +15,26 @@ We started with a simple observation: models are excellent at distinguishing tru
 
 The "Top-k Curve" below reveals that the correct answer is almost *always* in the top-50 logits (80%+ Recall), but it gets pushed down by generic tokens in the final step.
 
+![Gap Analysis](assets/composite_gap.png)
+*(Figure 1: The Anatomy of the Gap. (a) Massive gap between Pairwise and Top-1. (b) Margin distribution showing Near-Misses vs Deep Collapse. (c) Top-k Curve confirming retrieval success.)*
+
 ---
 
 ## 2. The Mechanism: Signal Decay
 
-To understand *why* the correct token loses, we traced its probability across all layers ("Logit Lens").
+To understand *why* the correct token loses, we traced its probability across all layers ("Logit Lens") and analyzed the error modes.
 
-### 2.1 The "Overwriting" Signature
-We discovered a consistent pathological pattern:
-1.  **Early Layers (0-15)**: The Correct Token (e.g., "Paris") rises in probability.
-2.  **Peak (Layer 20)**: The model "knows" the answer (Prob > 0.5).
-3.  **Late Layers (25-32)**: The signal actively decays, and a generic token (e.g., "the") takes over.
+![Mechanistic Analysis](assets/composite_mechanistic.png)
+*(Figure 2: Mechanistic Signatures. (a) Probability of the correct token rises mid-layer then falls. (b) "Overwritten" errors (orange) show active suppression. (c) These errors are high-confidence (low entropy), suggesting a "confused collapse" rather than a blind guess.)*
 
-### 2.2 It's Not "False Belief"
+### 2.1 Error Modes: It's Not "False Belief"
 A crucial insight from our **Error Mode Decomposition**:
 *   **False-Selected (<2%)**: The model rarely excitedly shouts a wrong fact (active hallucination).
 *   **Generic-Collapse (~40%)**: The model primarily crashes into function words ("the", "a", "of").
 *   **True-Competitive (~52%)**: The correct answer is in the Top-10, losing by a tiny margin.
 
-**Conclusion**: Hallucination here isn't "believing a lie"; it's a **failure to sustain the truth signal** against the noise of language modeling priors.
+![Error Modes](assets/composite_error_modes.png)
+*(Figure 3: Error Taxonomy. The dominant failures are recoverable "True-Competitive" errors and deep "Generic Collapse". Left panel shows 52% of errors are near-misses.)*
 
 ---
 
@@ -45,6 +46,9 @@ Since the "Decay" has a distinct mechanistic signature (High Mid-Layer Logit vs 
 *   **Precision**: The monitor achieves **100% Precision** at 10-25% coverage.
 *   **Generalization**: It works on **OOD Relations** (unseen factual categories) with 71% AUC.
 *   **Meaning**: We can flag—in real-time—when the model is about to "forget" a fact it currently holds in its internal state.
+
+![OOD ROC](assets/figure_5_monitor_ood.png)
+*(Figure 4: Monitor Generalization. The probe detects decay on completely unseen factual relations, proving it targets a universal mechanism.)*
 
 ---
 
@@ -62,6 +66,9 @@ We tested two strategies to fix this "Signal Decay":
 *   *Result*: **Superior.**
     *   With $\alpha=0.2$ (20% mid-layer influence), we recover ~3% of errors without degrading capabilities.
     *   This confirms that the "truth" was still there, just needing a small boost to overcome the noise.
+
+![Intervention](assets/composite_intervention.png)
+*(Figure 5: Mitigation. (a) Logit Mixing (alpha=0.2) achieves positive Net Gain, recovering errors without breaking correct answers. (b) The monitor effectively guides this intervention.)*
 
 ---
 
